@@ -1,0 +1,62 @@
+# Configuración Global para el Pipeline de Datos de Hilo Tools
+defaults:
+  timezone: "America/Bogota"
+  warehouse_path: "data/warehouse/warehouse.db"
+  seed: 42
+
+sources:
+  # Fuente de datos en URL pública de Google Drive donde se encuentran los .xlsx en raw
+  gdrive_folder_url: "https://drive.google.com/drive/folders/1n2CsVWT1v_zYE8jOdtLJBReMKezGP1i-?usp=sharing"
+
+  # Se facilita también obtener los datos de manera local por si en algún momento la URL se vuelve privada o falla
+  local_files:
+    sales: "data/raw/sales_sample.xlsx"
+    inventory: "data/raw/inventory_sample.xlsx"
+    hr: "data/raw/hr_sample.xlsx"
+
+# Esquema normalizado (original -> canónico)
+columns:
+  sales:
+    Sale_ID: sale_id
+    Sale_Date: sale_date
+    Product_ID: product_id
+    Customer_ID: customer_id
+    Store_ID: store_id
+    Quantity: quantity
+    Unit_Price: unit_price
+    Discount_Percent: discount_percent
+    Sales_Amount: sales_amount
+    Profit_Margin: profit_margin
+
+  inventory:
+    Inventory_ID: inventory_id
+    Date: snapshot_date
+    Warehouse_ID: warehouse_id
+    Category_ID: category_id
+    Product_Code: product_code
+    Stock_Quantity: stock_qty
+    Reorder_Level: reorder_level
+    Unit_Cost: unit_cost
+    Total_Value: total_value
+
+  hr:
+    Record_ID: record_id
+    Employee_ID: employee_id
+    Review_Date: review_date
+    Department_ID: department_id
+    Performance_Score: performance_score
+    Hours_Worked: hours_worked
+    Overtime_Hours: overtime_hours
+    Salary: salary
+    Bonus: bonus
+
+# Esquema en estrella del modelo de datos - Tablas
+star_schema:
+  include_fact_inventory: true
+  include_dim_employee: true
+
+# Parametros para el PCA
+pca:
+  frequency: "M"   # Agregación mensual
+  imputation: "median" # Valores faltantes se reemplazan con la mediana
+  n_components: 5 # Número máximo de componentes principales a calcular en PCA
