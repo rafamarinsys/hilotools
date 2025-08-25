@@ -105,6 +105,10 @@ Tras `run-all` se generan:
 - `report/pca_loadings.csv`
 - `report/pca_summary.md`
 
+## Informe Técnico
+
+En `report/report.md` se encuentra el informe técnico detallado del pipeline de datos.
+
 ## Reproducibilidad
 
 - **Conda**.
